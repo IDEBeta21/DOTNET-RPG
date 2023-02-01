@@ -22,9 +22,15 @@ namespace MYAPP.Controllers
         }
 
         // Returns a single character with id provided
-        [HttpGet("GetSingle")]
+        [HttpGet("{id}")]
         public ActionResult<Character> GetSingle(int id){
             return Ok(characters.FirstOrDefault(c => c.Id == id));
+        }
+
+        [HttpPost]
+        public ActionResult<List<Character>> AddCharacter(Character newCharacter){
+            characters.Add(newCharacter);
+            return Ok(characters);
         }
     }
 }
