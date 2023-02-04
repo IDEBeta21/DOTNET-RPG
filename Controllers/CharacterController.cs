@@ -20,7 +20,7 @@ namespace MYAPP.Controllers
         // Returs all the Characters
         [HttpGet("GetAll")]
         public ActionResult<List<Character>> Get(){
-            return Ok(_characterService.GetAllCharcters());
+            return Ok(_characterService.GetAllCharacters());
         }
 
         // Returns a single character with id provided 

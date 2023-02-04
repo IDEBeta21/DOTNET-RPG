@@ -18,7 +18,7 @@ namespace MYAPP.Services.CharacterService
             return characters;
         }
 
-        public List<Character> GetAllCharcters()
+        public List<Character> GetAllCharacters()
         {
             // throw new NotImplementedException();
             return characters;
