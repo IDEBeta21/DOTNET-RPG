@@ -13,8 +13,8 @@ namespace MYAPP.Services.CharacterService
             new Character(),
             new Character {Id = 1, Name = "Sam"}
         };
-        private readonly IMapper _mapper;
 
+        private readonly IMapper _mapper;
         public CharacterService(IMapper mapper)
         {
             _mapper = mapper;
@@ -46,6 +46,31 @@ namespace MYAPP.Services.CharacterService
             var character = characters.FirstOrDefault(c => c.Id == id);
             serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
             return serviceResponse;
+        }
+
+        public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto updatedCharacter)
+        {
+            ServiceResponse<GetCharacterDto> response = new ServiceResponse<GetCharacterDto>();
+            
+            try{// If the character exist
+                Character character = characters.FirstOrDefault(c => c.Id == updatedCharacter.Id);
+
+                character.Name = updatedCharacter.Name;
+                character.HitPoints = updatedCharacter.HitPoints;
+                character.Strength = updatedCharacter.Strength;
+                character.Defense = updatedCharacter.Defense;
+                character.Intelligence = updatedCharacter.Intelligence;
+                character.Class = updatedCharacter.Class;
+
+                response.Data = _mapper.Map<GetCharacterDto>(character);
+            }
+            catch (Exception exc)
+            {
+                response.Success = false;
+                response.Message = exc.Message;
+            }
+
+            return response;
         }
     }
 }
