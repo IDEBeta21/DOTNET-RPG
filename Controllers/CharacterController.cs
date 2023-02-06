@@ -17,22 +17,30 @@ namespace MYAPP.Controllers
         {
              _characterService = characterService;
         }
-
-        // Returs all the Characters
-        [HttpGet("GetAll")]
+        
+        [HttpGet("GetAll")]// Returs all the Characters
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get(){
             return Ok(await _characterService.GetAllCharacters());
         }
 
-        // Returns a single character with id provided 
-        [HttpGet("GetCharacter")]
+        [HttpGet("GetCharacter")]// Returns a single character with id provided 
         public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> GetSingle(int id){
             return Ok(await _characterService.GetCharacterById(id));
         }
 
-        [HttpPost]
+        [HttpPost]//Add new Character
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> AddCharacter(AddCharacterDto newCharacter){
             return Ok(await _characterService.AddCharacter(newCharacter));
+        }
+
+        [HttpPut]//Update character information
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> UpdateCharacter(UpdateCharacterDto updatedCharacter){
+            var response = await _characterService.UpdateCharacter(updatedCharacter);
+            if(response.Data == null){
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
     }
 }
