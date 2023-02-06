@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MYAPP.Dtos.Character;
 using MYAPP.Services.CharacterService;
 
 namespace MYAPP.Controllers
@@ -19,18 +20,18 @@ namespace MYAPP.Controllers
 
         // Returs all the Characters
         [HttpGet("GetAll")]
-        public async Task<ActionResult<ServiceResponse<List<Character>>>> Get(){
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get(){
             return Ok(await _characterService.GetAllCharacters());
         }
 
         // Returns a single character with id provided 
         [HttpGet("GetCharacter")]
-        public async Task<ActionResult<ServiceResponse<Character>>> GetSingle(int id){
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> GetSingle(int id){
             return Ok(await _characterService.GetCharacterById(id));
         }
 
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<Character>>>> AddCharacter(Character newCharacter){
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> AddCharacter(AddCharacterDto newCharacter){
             return Ok(await _characterService.AddCharacter(newCharacter));
         }
     }
