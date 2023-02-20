@@ -27,11 +27,20 @@ namespace MYAPP.Services.CharacterService
         public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
         {
             // throw new NotImplementedException();
+            // var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+            // Character character = _mapper.Map<Character>(newCharacter);
+            // character.Id = characters.Max(c => c.Id) + 1;
+            // characters.Add(character);
+            // serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+            // return serviceResponse;
+
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
             Character character = _mapper.Map<Character>(newCharacter);
-            character.Id = characters.Max(c => c.Id) + 1;
-            characters.Add(character);
-            serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+            _context.Characters.Add(character);
+            await _context.SaveChangesAsync();
+            serviceResponse.Data = await _context.Characters
+                .Select(c => _mapper.Map<GetCharacterDto>(c))
+                .ToListAsync();
             return serviceResponse;
         }
 
@@ -71,8 +80,8 @@ namespace MYAPP.Services.CharacterService
         {
             // throw new NotImplementedException();
             var serviceResponse = new ServiceResponse<GetCharacterDto>();
-            var character = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-            serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
+            var dbCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
+            serviceResponse.Data = _mapper.Map<GetCharacterDto>(dbCharacter);
             return serviceResponse;
         }   
 

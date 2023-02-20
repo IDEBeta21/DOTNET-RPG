@@ -18,7 +18,7 @@ namespace MYAPP.Controllers
              _characterService = characterService;
         }
         
-        [HttpDelete("{id}")]// Returns a single character with id provided 
+        [HttpDelete("DeleteCharacter")]// Returns a single character with id provided 
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Delete(int id){
             var response = await _characterService.DeleteCharacter(id);
             if(response.Data == null){
@@ -32,12 +32,12 @@ namespace MYAPP.Controllers
             return Ok(await _characterService.GetAllCharacters());
         }
 
-        [HttpGet("GetCharacter")]// Returns a single character with id provided 
+        [HttpGet("GetSingleCharacter")]// Returns a single character with id provided 
         public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> GetSingle(int id){
             return Ok(await _characterService.GetCharacterById(id));
         }
 
-        [HttpPost]//Add new Character
+        [HttpPost("AddCharacter")]//Add new Character
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> AddCharacter(AddCharacterDto newCharacter){
             return Ok(await _characterService.AddCharacter(newCharacter));
         }
