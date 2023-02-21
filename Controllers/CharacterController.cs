@@ -18,7 +18,7 @@ namespace MYAPP.Controllers
              _characterService = characterService;
         }
         
-        [HttpDelete("DeleteCharacter")]// Returns a single character with id provided 
+        [HttpDelete("DeleteCharacterById")]// Returns a single character with id provided 
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Delete(int id){
             var response = await _characterService.DeleteCharacter(id);
             if(response.Data == null){
@@ -27,12 +27,12 @@ namespace MYAPP.Controllers
 
             return Ok(response);
         }
-        [HttpGet("GetAll")]// Returs all the Characters
+        [HttpGet("GetAllCharacters")]// Returs all the Characters
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get(){
             return Ok(await _characterService.GetAllCharacters());
         }
 
-        [HttpGet("GetSingleCharacter")]// Returns a single character with id provided 
+        [HttpGet("GetSingleCharacterById")]// Returns a single character with id provided 
         public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> GetSingle(int id){
             return Ok(await _characterService.GetCharacterById(id));
         }
@@ -42,7 +42,7 @@ namespace MYAPP.Controllers
             return Ok(await _characterService.AddCharacter(newCharacter));
         }
 
-        [HttpPut]//Update character information
+        [HttpPut("UpdateCharacterById")]//Update character information
         public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> UpdateCharacter(UpdateCharacterDto updatedCharacter){
             var response = await _characterService.UpdateCharacter(updatedCharacter);
             if(response.Data == null){
