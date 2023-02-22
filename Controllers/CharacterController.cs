@@ -29,6 +29,7 @@ namespace MYAPP.Controllers
 
             return Ok(response);
         }
+
         [HttpGet("GetAllCharacters")]// Returs all the Characters
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get(){
             return Ok(await _characterService.GetAllCharacters());
