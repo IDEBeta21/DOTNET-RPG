@@ -30,12 +30,22 @@ namespace MYAPP.Services.CharacterService
             // return serviceResponse;
 
             var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
-            Character character = _mapper.Map<Character>(newCharacter);
-            _context.Characters.Add(character);
-            await _context.SaveChangesAsync();
-            serviceResponse.Data = await _context.Characters
-                .Select(c => _mapper.Map<GetCharacterDto>(c))
-                .ToListAsync();
+
+            try
+            {
+                Character character = _mapper.Map<Character>(newCharacter);
+                _context.Characters.Add(character);
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = await _context.Characters
+                    .Select(c => _mapper.Map<GetCharacterDto>(c))
+                    .ToListAsync();
+            }
+            catch (Exception exc)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = exc.Message;
+            }
+
             return serviceResponse;
         }
 
@@ -67,8 +77,17 @@ namespace MYAPP.Services.CharacterService
             // };
 
             var response = new ServiceResponse<List<GetCharacterDto>>();
-            var dbCharacter = await _context.Characters.ToListAsync();
-            response.Data = dbCharacter.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+
+            try
+            {
+                var dbCharacter = await _context.Characters.ToListAsync();
+                response.Data = dbCharacter.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+            }
+            catch (Exception exc)
+            {
+                response.Success = false;
+                response.Message = exc.Message;
+            }
 
             return response;
         }
@@ -77,8 +96,24 @@ namespace MYAPP.Services.CharacterService
         {
             // throw new NotImplementedException();
             var serviceResponse = new ServiceResponse<GetCharacterDto>();
-            var dbCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-            serviceResponse.Data = _mapper.Map<GetCharacterDto>(dbCharacter);
+
+            try
+            {
+                var dbCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
+                serviceResponse.Data = _mapper.Map<GetCharacterDto>(dbCharacter);
+    
+                //If Characater not found
+                if(serviceResponse.Data == null){
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Character Not Found!";
+                }
+            }
+            catch (Exception exc)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = exc.Message;
+            }
+
             return serviceResponse;
         }   
 
