@@ -81,8 +81,9 @@ namespace MYAPP.Services.CharacterService
             try
             {
                 var dbCharacter = await _context.Characters.ToListAsync();
-                response.Data = dbCharacter.Select(c => _mapper.Map<GetCharacterDto>(c)).OrderBy(c => c.Id).ToList();
-                response.Data.Sort();
+                response.Data = dbCharacter
+                    .Select(c => _mapper.Map<GetCharacterDto>(c))
+                    .OrderBy(c => c.Id).ToList();
             }
             catch (Exception exc)
             {
