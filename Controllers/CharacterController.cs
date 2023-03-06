@@ -27,7 +27,9 @@ namespace MYAPP.Controllers
 
         [HttpGet("GetSingleCharacterById")]// Returns a single character with id provided 
         public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> GetSingle(int id){
-            return Ok(await _characterService.GetCharacterById(id));
+            var response = await _characterService.GetCharacterById(id);
+            if(response.Data == null) return NotFound(response);
+            return Ok(response);
         }
 
         [HttpPost("AddCharacter")]//Add new Character

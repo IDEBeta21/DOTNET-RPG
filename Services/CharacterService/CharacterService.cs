@@ -29,16 +29,18 @@ namespace MYAPP.Services.CharacterService
             // serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
             // return serviceResponse;
 
-            var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+            ServiceResponse<List<GetCharacterDto>> serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
 
             try
             {
                 Character character = _mapper.Map<Character>(newCharacter);
                 _context.Characters.Add(character);
                 await _context.SaveChangesAsync();
-                serviceResponse.Data = await _context.Characters
+
+                var dbCharacter = await _context.Characters.ToListAsync();
+                serviceResponse.Data = dbCharacter
                     .Select(c => _mapper.Map<GetCharacterDto>(c))
-                    .ToListAsync();
+                    .OrderBy(c => c.Id).ToList();
             }
             catch (Exception exc)
             {
@@ -57,8 +59,13 @@ namespace MYAPP.Services.CharacterService
                 Character character = await _context.Characters.FirstAsync(c => c.Id == id); 
                 _context.Characters.Remove(character);
                 await _context.SaveChangesAsync();
+                
+                var dbCharacter = await _context.Characters.ToListAsync();
+                response.Data = dbCharacter
+                    .Select(c => _mapper.Map<GetCharacterDto>(c))
+                    .OrderBy(c => c.Id).ToList();
 
-                response.Data = _context.Characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+                response.Message = "Character ID:" + id + " has been deleted";
             }
             catch (Exception exc)
             {
@@ -139,6 +146,7 @@ namespace MYAPP.Services.CharacterService
                 await _context.SaveChangesAsync();
 
                 response.Data = _mapper.Map<GetCharacterDto>(character);
+                response.Message = "Charactere ID:" + character.Id + " has been updated";
             }
             catch (Exception exc)
             {
