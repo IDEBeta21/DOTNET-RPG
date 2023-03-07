@@ -8,10 +8,10 @@ namespace MYAPP.Services.CharacterService
 {
     public interface ICharacterService
     {
-        Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters();
-        Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id);
-        Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter); 
-        Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto updatedCharacter);
-        Task<ServiceResponse<List<GetCharacterDto>>> DeleteCharacter(int id); 
+        Task<ServiceResponse<List<GetCharacterDtoResponse>>> GetAllCharacters();
+        Task<ServiceResponse<GetCharacterDtoResponse>> GetCharacterById(int id);
+        Task<ServiceResponse<List<GetCharacterDtoResponse>>> AddCharacter(AddCharacterDtoRequest newCharacter); 
+        Task<ServiceResponse<GetCharacterDtoResponse>> UpdateCharacter(UpdateCharacterDtoRequest updatedCharacter);
+        Task<ServiceResponse<List<GetCharacterDtoResponse>>> DeleteCharacter(int id); 
     }
 }

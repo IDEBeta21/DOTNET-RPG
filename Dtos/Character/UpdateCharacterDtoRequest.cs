@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MYAPP.Dtos.Character
 {
-    public class UpdateCharacterDto
+    public class UpdateCharacterDtoRequest
     {
         public int Id { get; set; }
         public string Name { get; set; } = "Devian";
