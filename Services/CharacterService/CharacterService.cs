@@ -19,7 +19,7 @@ namespace MYAPP.Services.CharacterService
             _context = context;
         }
 
-        public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
+        public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> AddCharacter(AddCharacterDtoRequest newCharacter)
         {
             // throw new NotImplementedException();
             // var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
@@ -29,7 +29,7 @@ namespace MYAPP.Services.CharacterService
             // serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
             // return serviceResponse;
 
-            ServiceResponse<List<GetCharacterDto>> serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+            ServiceResponse<List<GetCharacterDtoResponse>> serviceResponse = new ServiceResponse<List<GetCharacterDtoResponse>>();
 
             try
             {
@@ -39,7 +39,7 @@ namespace MYAPP.Services.CharacterService
 
                 var dbCharacter = await _context.Characters.ToListAsync();
                 serviceResponse.Data = dbCharacter
-                    .Select(c => _mapper.Map<GetCharacterDto>(c))
+                    .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
                     .OrderBy(c => c.Id).ToList();
             }
             catch (Exception exc)
@@ -51,21 +51,21 @@ namespace MYAPP.Services.CharacterService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetCharacterDto>>> DeleteCharacter(int id)
+        public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> DeleteCharacter(DeleteCharacterRequest deleteCharacterRequest)
         {
-            ServiceResponse<List<GetCharacterDto>> response = new ServiceResponse<List<GetCharacterDto>>();
+            ServiceResponse<List<GetCharacterDtoResponse>> response = new ServiceResponse<List<GetCharacterDtoResponse>>();
             
             try{// If the character exist
-                Character character = await _context.Characters.FirstAsync(c => c.Id == id); 
+                Character character = await _context.Characters.FirstAsync(c => c.Id == deleteCharacterRequest.Id); 
                 _context.Characters.Remove(character);
                 await _context.SaveChangesAsync();
                 
                 var dbCharacter = await _context.Characters.ToListAsync();
                 response.Data = dbCharacter
-                    .Select(c => _mapper.Map<GetCharacterDto>(c))
+                    .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
                     .OrderBy(c => c.Id).ToList();
 
-                response.Message = "Character ID:" + id + " has been deleted";
+                response.Message = "Character ID:" + deleteCharacterRequest.Id + " has been deleted";
             }
             catch (Exception exc)
             {
@@ -76,20 +76,20 @@ namespace MYAPP.Services.CharacterService
             return response;
         }
 
-        public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
+        public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> GetAllCharacters()
         {
             // throw new NotImplementedException();
             // return new ServiceResponse<List<GetCharacterDto>> { 
             //     Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList()
             // };
 
-            var response = new ServiceResponse<List<GetCharacterDto>>();
+            var response = new ServiceResponse<List<GetCharacterDtoResponse>>();
 
             try
             {
                 var dbCharacter = await _context.Characters.ToListAsync();
                 response.Data = dbCharacter
-                    .Select(c => _mapper.Map<GetCharacterDto>(c))
+                    .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
                     .OrderBy(c => c.Id).ToList();
             }
             catch (Exception exc)
@@ -101,15 +101,15 @@ namespace MYAPP.Services.CharacterService
             return response;
         }
 
-        public async Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id)
+        public async Task<ServiceResponse<GetCharacterDtoResponse>> GetCharacterById(GetSingleCharacterRequest singleCharacterRequest)
         {
             // throw new NotImplementedException();
-            var serviceResponse = new ServiceResponse<GetCharacterDto>();
+            var serviceResponse = new ServiceResponse<GetCharacterDtoResponse>();
 
             try
             {
-                var dbCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
-                serviceResponse.Data = _mapper.Map<GetCharacterDto>(dbCharacter);
+                var dbCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == singleCharacterRequest.Id);
+                serviceResponse.Data = _mapper.Map<GetCharacterDtoResponse>(dbCharacter);
     
                 //If Characater not found
                 if(serviceResponse.Data == null){
@@ -126,9 +126,9 @@ namespace MYAPP.Services.CharacterService
             return serviceResponse;
         }   
 
-        public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto updatedCharacter)
+        public async Task<ServiceResponse<GetCharacterDtoResponse>> UpdateCharacter(UpdateCharacterDtoRequest updatedCharacter)
         {
-            ServiceResponse<GetCharacterDto> response = new ServiceResponse<GetCharacterDto>();
+            ServiceResponse<GetCharacterDtoResponse> response = new ServiceResponse<GetCharacterDtoResponse>();
             
             try{// If the character exist
                 var character = await _context.Characters
@@ -145,7 +145,7 @@ namespace MYAPP.Services.CharacterService
 
                 await _context.SaveChangesAsync();
 
-                response.Data = _mapper.Map<GetCharacterDto>(character);
+                response.Data = _mapper.Map<GetCharacterDtoResponse>(character);
                 response.Message = "Charactere ID:" + character.Id + " has been updated";
             }
             catch (Exception exc)

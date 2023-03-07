@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace MYAPP.Dtos.User
 {
-    public class UserLoginDto
+    public class UserRegisterDtoRequest
     {
         public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } =  string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }

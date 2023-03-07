@@ -42,9 +42,9 @@ namespace MYAPP.Data
             return response;
         }
 
-        public async Task<ServiceResponse<int>> Register(User user, string password)
+        public async Task<ServiceResponse<bool>> Register(User user, string password)
         {
-            ServiceResponse<int> response = new ServiceResponse<int>();
+            ServiceResponse<bool> response = new ServiceResponse<bool>();
             if(await UserExists(user.Username))
             {
                 response.Success = false;
@@ -59,7 +59,8 @@ namespace MYAPP.Data
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            response.Data = user.Id;
+            response.Data = true;
+            response.Message = "User Successfully Registered";
             return response;
         }
 

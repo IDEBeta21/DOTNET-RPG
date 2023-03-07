@@ -21,24 +21,24 @@ namespace MYAPP.Controllers
         }
         
         [HttpGet("GetAllCharacters")]// Returs all the Characters
-        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Get(){
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDtoResponse>>>> Get(){
             return Ok(await _characterService.GetAllCharacters());
         }
 
         [HttpGet("GetSingleCharacterById")]// Returns a single character with id provided 
-        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> GetSingle(int id){
-            var response = await _characterService.GetCharacterById(id);
+        public async Task<ActionResult<ServiceResponse<GetCharacterDtoResponse>>> GetSingle(GetSingleCharacterRequest singleCharacterRequest){
+            var response = await _characterService.GetCharacterById(singleCharacterRequest);
             if(response.Data == null) return NotFound(response);
             return Ok(response);
         }
 
         [HttpPost("AddCharacter")]//Add new Character
-        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> AddCharacter(AddCharacterDto newCharacter){
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDtoResponse>>>> AddCharacter(AddCharacterDtoRequest newCharacter){
             return Ok(await _characterService.AddCharacter(newCharacter));
         }
 
         [HttpPut("UpdateCharacterById")]//Update character information
-        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> UpdateCharacter(UpdateCharacterDto updatedCharacter){
+        public async Task<ActionResult<ServiceResponse<GetCharacterDtoResponse>>> UpdateCharacter(UpdateCharacterDtoRequest updatedCharacter){
             var response = await _characterService.UpdateCharacter(updatedCharacter);
             if(response.Data == null){
                 return NotFound(response);
@@ -48,8 +48,8 @@ namespace MYAPP.Controllers
         }
 
         [HttpDelete("DeleteCharacterById")]// Returns a single character with id provided 
-        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> Delete(int id){
-            var response = await _characterService.DeleteCharacter(id);
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDtoResponse>>>> Delete(DeleteCharacterRequest deleteCharacterRequest){
+            var response = await _characterService.DeleteCharacter(deleteCharacterRequest);
             if(response.Data == null){
                 return NotFound(response);
             }

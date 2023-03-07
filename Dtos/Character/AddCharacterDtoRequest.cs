@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace MYAPP.Dtos.Character
 {
-    public class GetCharacterDto
+    public class AddCharacterDtoRequest
     {
-        public int Id { get; set; }
         public string Name { get; set; } = "Devian";
         public int HitPoints { get; set; } = 100;
         public int Strength { get; set; } = 10;
