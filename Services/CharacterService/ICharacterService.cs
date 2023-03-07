@@ -9,9 +9,9 @@ namespace MYAPP.Services.CharacterService
     public interface ICharacterService
     {
         Task<ServiceResponse<List<GetCharacterDtoResponse>>> GetAllCharacters();
-        Task<ServiceResponse<GetCharacterDtoResponse>> GetCharacterById(int id);
+        Task<ServiceResponse<GetCharacterDtoResponse>> GetCharacterById(GetSingleCharacterRequest singleCharacterRequest);
         Task<ServiceResponse<List<GetCharacterDtoResponse>>> AddCharacter(AddCharacterDtoRequest newCharacter); 
         Task<ServiceResponse<GetCharacterDtoResponse>> UpdateCharacter(UpdateCharacterDtoRequest updatedCharacter);
-        Task<ServiceResponse<List<GetCharacterDtoResponse>>> DeleteCharacter(int id); 
+        Task<ServiceResponse<List<GetCharacterDtoResponse>>> DeleteCharacter(DeleteCharacterRequest deleteCharacterRequest); 
     }
 }

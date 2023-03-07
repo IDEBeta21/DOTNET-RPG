@@ -51,12 +51,12 @@ namespace MYAPP.Services.CharacterService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> DeleteCharacter(int id)
+        public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> DeleteCharacter(DeleteCharacterRequest deleteCharacterRequest)
         {
             ServiceResponse<List<GetCharacterDtoResponse>> response = new ServiceResponse<List<GetCharacterDtoResponse>>();
             
             try{// If the character exist
-                Character character = await _context.Characters.FirstAsync(c => c.Id == id); 
+                Character character = await _context.Characters.FirstAsync(c => c.Id == deleteCharacterRequest.Id); 
                 _context.Characters.Remove(character);
                 await _context.SaveChangesAsync();
                 
@@ -65,7 +65,7 @@ namespace MYAPP.Services.CharacterService
                     .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
                     .OrderBy(c => c.Id).ToList();
 
-                response.Message = "Character ID:" + id + " has been deleted";
+                response.Message = "Character ID:" + deleteCharacterRequest.Id + " has been deleted";
             }
             catch (Exception exc)
             {
@@ -101,14 +101,14 @@ namespace MYAPP.Services.CharacterService
             return response;
         }
 
-        public async Task<ServiceResponse<GetCharacterDtoResponse>> GetCharacterById(int id)
+        public async Task<ServiceResponse<GetCharacterDtoResponse>> GetCharacterById(GetSingleCharacterRequest singleCharacterRequest)
         {
             // throw new NotImplementedException();
             var serviceResponse = new ServiceResponse<GetCharacterDtoResponse>();
 
             try
             {
-                var dbCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == id);
+                var dbCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == singleCharacterRequest.Id);
                 serviceResponse.Data = _mapper.Map<GetCharacterDtoResponse>(dbCharacter);
     
                 //If Characater not found

@@ -19,7 +19,7 @@ namespace MYAPP.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegisterDto request)
+        public async Task<ActionResult<ServiceResponse<int>>> Register(UserRegisterDtoRequest request)
         {
             var response = await _authRepo.Register(
                 new User { Username = request.Username}, request.Password
@@ -32,7 +32,7 @@ namespace MYAPP.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<ServiceResponse<string>>> Login(UserLoginDto request)
+        public async Task<ActionResult<ServiceResponse<string>>> Login(UserRegisterDtoRequest request)
         {
             var response = await _authRepo.Login(request.Username, request.Password);
             if(!response.Success)

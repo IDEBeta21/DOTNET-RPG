@@ -26,8 +26,8 @@ namespace MYAPP.Controllers
         }
 
         [HttpGet("GetSingleCharacterById")]// Returns a single character with id provided 
-        public async Task<ActionResult<ServiceResponse<GetCharacterDtoResponse>>> GetSingle(int id){
-            var response = await _characterService.GetCharacterById(id);
+        public async Task<ActionResult<ServiceResponse<GetCharacterDtoResponse>>> GetSingle(GetSingleCharacterRequest singleCharacterRequest){
+            var response = await _characterService.GetCharacterById(singleCharacterRequest);
             if(response.Data == null) return NotFound(response);
             return Ok(response);
         }
@@ -48,8 +48,8 @@ namespace MYAPP.Controllers
         }
 
         [HttpDelete("DeleteCharacterById")]// Returns a single character with id provided 
-        public async Task<ActionResult<ServiceResponse<List<GetCharacterDtoResponse>>>> Delete(int id){
-            var response = await _characterService.DeleteCharacter(id);
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDtoResponse>>>> Delete(DeleteCharacterRequest deleteCharacterRequest){
+            var response = await _characterService.DeleteCharacter(deleteCharacterRequest);
             if(response.Data == null){
                 return NotFound(response);
             }
