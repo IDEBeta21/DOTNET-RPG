@@ -76,7 +76,7 @@ namespace MYAPP.Services.CharacterService
             return response;
         }
 
-        public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> GetAllCharacters()
+        public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> GetAllCharacters(int userId)
         {
             // throw new NotImplementedException();
             // return new ServiceResponse<List<GetCharacterDto>> { 
@@ -87,7 +87,9 @@ namespace MYAPP.Services.CharacterService
 
             try
             {
-                var dbCharacter = await _context.Characters.ToListAsync();
+                var dbCharacter = await _context.Characters
+                    .Where(c => c.User.Id == userId)
+                    .ToListAsync();
                 response.Data = dbCharacter
                     .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
                     .OrderBy(c => c.Id).ToList();

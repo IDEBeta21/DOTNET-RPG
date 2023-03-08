@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,8 @@ namespace MYAPP.Controllers
         
         [HttpGet("GetAllCharacters")]// Returs all the Characters
         public async Task<ActionResult<ServiceResponse<List<GetCharacterDtoResponse>>>> Get(){
-            return Ok(await _characterService.GetAllCharacters());
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            return Ok(await _characterService.GetAllCharacters(userId));
         }
 
         [HttpGet("GetSingleCharacterById")]// Returns a single character with id provided 
