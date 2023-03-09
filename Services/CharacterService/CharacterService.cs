@@ -69,16 +69,29 @@ namespace MYAPP.Services.CharacterService
             ServiceResponse<List<GetCharacterDtoResponse>> response = new ServiceResponse<List<GetCharacterDtoResponse>>();
             
             try{// If the character exist
-                Character character = await _context.Characters.FirstAsync(c => c.Id == deleteCharacterRequest.Id); 
-                _context.Characters.Remove(character);
-                await _context.SaveChangesAsync();
-                
-                var dbCharacter = await _context.Characters.ToListAsync();
-                response.Data = dbCharacter
-                    .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
-                    .OrderBy(c => c.Id).ToList();
+                Character character = await _context.Characters
+                    .FirstOrDefaultAsync(c => c.Id == deleteCharacterRequest.Id && c.User.Id == GetUserId()); 
 
-                response.Message = "Character ID:" + deleteCharacterRequest.Id + " has been deleted";
+                if(character != null)
+                {
+                    _context.Characters.Remove(character);
+                    await _context.SaveChangesAsync();
+                    
+                    var dbCharacter = await _context.Characters
+                        .Where(c => c.User.Id == GetUserId())
+                        .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
+                        .ToListAsync();
+                    response.Data = dbCharacter
+                        .OrderBy(c => c.Id).ToList();
+                        
+                    response.Message = "Character ID:" + deleteCharacterRequest.Id + " has been deleted";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Character not found!";
+                }
+               
             }
             catch (Exception exc)
             {
