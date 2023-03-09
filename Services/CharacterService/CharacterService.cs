@@ -39,11 +39,17 @@ namespace MYAPP.Services.CharacterService
 
             try
             {
+                //Adding character via data context
                 Character character = _mapper.Map<Character>(newCharacter);
-                _context.Characters.Add(character);
-                await _context.SaveChangesAsync();
+                character.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == GetUserId());
 
-                var dbCharacter = await _context.Characters.ToListAsync();
+                _context.Characters.Add(character);
+                await _context.SaveChangesAsync();//saving changes to database
+
+                //display characters that belongs to the current user 
+                var dbCharacter = await _context.Characters
+                    .Where(c => c.User.Id == GetUserId())
+                    .ToListAsync();
                 serviceResponse.Data = dbCharacter
                     .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
                     .OrderBy(c => c.Id).ToList();
