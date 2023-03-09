@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -13,11 +14,16 @@ namespace MYAPP.Services.CharacterService
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;
-        public CharacterService(IMapper mapper, DataContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public CharacterService(IMapper mapper, DataContext context, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+        private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext.User
+            .FindFirstValue(ClaimTypes.NameIdentifier));
 
         public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> AddCharacter(AddCharacterDtoRequest newCharacter)
         {
@@ -76,7 +82,7 @@ namespace MYAPP.Services.CharacterService
             return response;
         }
 
-        public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> GetAllCharacters(int userId)
+        public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> GetAllCharacters()
         {
             // throw new NotImplementedException();
             // return new ServiceResponse<List<GetCharacterDto>> { 
@@ -88,7 +94,7 @@ namespace MYAPP.Services.CharacterService
             try
             {
                 var dbCharacter = await _context.Characters
-                    .Where(c => c.User.Id == userId)
+                    .Where(c => c.User.Id == GetUserId())
                     .ToListAsync();
                 response.Data = dbCharacter
                     .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
