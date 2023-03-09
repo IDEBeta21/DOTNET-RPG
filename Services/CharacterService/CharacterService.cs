@@ -49,10 +49,11 @@ namespace MYAPP.Services.CharacterService
                 //display characters that belongs to the current user 
                 var dbCharacter = await _context.Characters
                     .Where(c => c.User.Id == GetUserId())
-                    .ToListAsync();
-                serviceResponse.Data = dbCharacter
                     .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
+                    .ToListAsync();
+                var sortedCharacterList = dbCharacter
                     .OrderBy(c => c.Id).ToList();
+                serviceResponse.Data = sortedCharacterList;
             }
             catch (Exception exc)
             {
@@ -101,10 +102,11 @@ namespace MYAPP.Services.CharacterService
             {
                 var dbCharacter = await _context.Characters
                     .Where(c => c.User.Id == GetUserId())
-                    .ToListAsync();
-                response.Data = dbCharacter
                     .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
+                    .ToListAsync();
+                var sortedCharacterList = dbCharacter
                     .OrderBy(c => c.Id).ToList();
+                response.Data = sortedCharacterList;
             }
             catch (Exception exc)
             {
