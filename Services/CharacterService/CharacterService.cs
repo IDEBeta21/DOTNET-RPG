@@ -124,7 +124,8 @@ namespace MYAPP.Services.CharacterService
 
             try
             {
-                var dbCharacter = await _context.Characters.FirstOrDefaultAsync(c => c.Id == singleCharacterRequest.Id);
+                var dbCharacter = await _context.Characters
+                    .FirstOrDefaultAsync(c => c.Id == singleCharacterRequest.Id && c.User.Id == GetUserId());
                 serviceResponse.Data = _mapper.Map<GetCharacterDtoResponse>(dbCharacter);
     
                 //If Characater not found
