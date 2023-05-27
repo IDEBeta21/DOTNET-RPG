@@ -1,10 +1,10 @@
-global using MYAPP.Models;
+global using DotNetRPG.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MYAPP.Data;
-using MYAPP.Services.CharacterService;
+using DotNetRPG.API.Data;
+using DotNetRPG.API.Services.CharacterService;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
