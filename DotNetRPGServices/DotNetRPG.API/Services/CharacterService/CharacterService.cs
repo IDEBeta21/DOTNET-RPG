@@ -5,10 +5,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using MYAPP.Data;
-using MYAPP.Dtos.Character;
+using DotNetRPG.API.Data;
+using DotNetRPG.API.Dtos.Character;
 
-namespace MYAPP.Services.CharacterService
+namespace DotNetRPG.API.Services.CharacterService
 {
     public class CharacterService : ICharacterService
     {

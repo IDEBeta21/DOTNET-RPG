@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MYAPP.Migrations
+namespace DotNetRPG.API.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

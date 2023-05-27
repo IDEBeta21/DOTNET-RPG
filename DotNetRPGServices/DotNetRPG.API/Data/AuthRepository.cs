@@ -4,10 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using DotNetRPG.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace MYAPP.Data
+namespace DotNetRPG.API.Data
 {
     public class AuthRepository : IAuthRepository
     {

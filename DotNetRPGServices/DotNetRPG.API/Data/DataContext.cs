@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace MYAPP.Data
+namespace DotNetRPG.API.Data
 {
     public class DataContext : DbContext
     {

@@ -5,10 +5,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MYAPP.Dtos.Character;
-using MYAPP.Services.CharacterService;
+using DotNetRPG.API.Dtos.Character;
+using DotNetRPG.API.Services.CharacterService;
+using DotNetRPG.API.Models;
 
-namespace MYAPP.Controllers
+namespace DotNetRPG.API.Controllers
 {
     [Authorize]
     [ApiController]
@@ -56,6 +57,12 @@ namespace MYAPP.Controllers
             }
 
             return Ok(response);
+        }
+
+        [HttpGet("GetUnitTestRes")]
+        public async Task<IActionResult> GetUniTestRes()
+        {
+            return Ok("Success");
         }
     }
 }

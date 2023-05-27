@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MYAPP.Data;
-using MYAPP.Dtos.User;
+using DotNetRPG.API.Data;
+using DotNetRPG.API.Dtos.User;
+using DotNetRPG.API.Models;
 
-namespace MYAPP.Controllers
+namespace DotNetRPG.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace MYAPP.Models
+namespace DotNetRPG.API.Models
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum RpgClass

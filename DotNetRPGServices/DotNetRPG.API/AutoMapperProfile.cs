@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using MYAPP.Dtos.Character;
+using DotNetRPG.API.Dtos.Character;
 
 namespace MYAPP
 {
