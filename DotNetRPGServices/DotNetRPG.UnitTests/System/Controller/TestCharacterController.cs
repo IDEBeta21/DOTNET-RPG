@@ -11,6 +11,7 @@ namespace DotNetRPG.UnitTests.System.Controller;
 
 public class TestCharacterController 
 {
+    #region GetAllCharacters
     [Fact]
     public async Task GetAllCharacters_OnSuccess_ReturnStatusCode200()
     {
@@ -90,4 +91,5 @@ public class TestCharacterController
         //Assert
         result.Should().BeOfType<NotFoundResult>();
     }
+    #endregion
 }
