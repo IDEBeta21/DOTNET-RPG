@@ -23,12 +23,24 @@ namespace DotNetRPG.API.Controllers
         }
         
         [HttpGet("GetAllCharacters")]// Returs all the Characters
-        public async Task<ActionResult<ServiceResponse<List<GetCharacterDtoResponse>>>> Get(){
-            return Ok(await _characterService.GetAllCharacters());
+        public async Task<IActionResult> GetAllCharacters(){
+
+            ServiceResponse<List<GetCharacterDtoResponse>> response = _characterService.GetAllCharacters();
+
+            if(response.Data.Count == 0)
+            {
+                response.Success = false;
+                response.Message = "Character/s not found!";
+                return NotFound();
+            }
+
+            return Ok(response);
+            
+            
         }
 
         [HttpGet("GetSingleCharacterById")]// Returns a single character with id provided 
-        public async Task<ActionResult<ServiceResponse<GetCharacterDtoResponse>>> GetSingle(GetSingleCharacterRequest singleCharacterRequest){
+        public async Task<ActionResult<ServiceResponse<GetCharacterDtoResponse>>> GetSingleCharacterById(GetSingleCharacterRequest singleCharacterRequest){
             var response = await _characterService.GetCharacterById(singleCharacterRequest);
             if(response.Data == null) return NotFound(response);
             return Ok(response);
@@ -57,12 +69,6 @@ namespace DotNetRPG.API.Controllers
             }
 
             return Ok(response);
-        }
-
-        [HttpGet("GetUnitTestRes")]
-        public async Task<IActionResult> GetUniTestRes()
-        {
-            return Ok("Success");
         }
     }
 }

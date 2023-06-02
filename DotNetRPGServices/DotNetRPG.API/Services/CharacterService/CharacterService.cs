@@ -25,6 +25,61 @@ namespace DotNetRPG.API.Services.CharacterService
         private int GetUserId() => int.Parse(_httpContextAccessor.HttpContext.User
             .FindFirstValue(ClaimTypes.NameIdentifier));
 
+        public ServiceResponse<List<GetCharacterDtoResponse>> GetAllCharacters()
+        {
+            // throw new NotImplementedException();
+            // return new ServiceResponse<List<GetCharacterDto>> { 
+            //     Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList()
+            // };
+
+            var response = new ServiceResponse<List<GetCharacterDtoResponse>>();
+
+            try
+            {
+                var dbCharacter = _context.Characters
+                    .Where(c => c.User.Id == GetUserId())
+                    .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
+                    .ToList();
+                var sortedCharacterList = dbCharacter
+                    .OrderBy(c => c.Id).ToList();
+                response.Data = sortedCharacterList;
+            }
+            catch (Exception exc)
+            {
+                response.Success = false;
+                response.Message = exc.Message;
+            }
+
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<GetCharacterDtoResponse>> GetCharacterById(GetSingleCharacterRequest singleCharacterRequest)
+        {
+            // throw new NotImplementedException();
+            var serviceResponse = new ServiceResponse<GetCharacterDtoResponse>();
+
+            try
+            {
+                var dbCharacter = await _context.Characters
+                    .FirstOrDefaultAsync(c => c.Id == singleCharacterRequest.Id && c.User.Id == GetUserId());
+                serviceResponse.Data = _mapper.Map<GetCharacterDtoResponse>(dbCharacter);
+    
+                //If Characater not found
+                if(serviceResponse.Data == null){
+                    serviceResponse.Success = false;
+                    serviceResponse.Message = "Character Not Found!";
+                }
+            }
+            catch (Exception exc)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = exc.Message;
+            }
+
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> AddCharacter(AddCharacterDtoRequest newCharacter)
         {
             // throw new NotImplementedException();
@@ -64,98 +119,6 @@ namespace DotNetRPG.API.Services.CharacterService
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> DeleteCharacter(DeleteCharacterRequest deleteCharacterRequest)
-        {
-            ServiceResponse<List<GetCharacterDtoResponse>> response = new ServiceResponse<List<GetCharacterDtoResponse>>();
-            
-            try{// If the character exist
-                Character character = await _context.Characters
-                    .FirstOrDefaultAsync(c => c.Id == deleteCharacterRequest.Id && c.User.Id == GetUserId()); 
-
-                if(character != null)
-                {
-                    _context.Characters.Remove(character);
-                    await _context.SaveChangesAsync();
-                    
-                    var dbCharacter = await _context.Characters
-                        .Where(c => c.User.Id == GetUserId())
-                        .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
-                        .ToListAsync();
-                    response.Data = dbCharacter
-                        .OrderBy(c => c.Id).ToList();
-                        
-                    response.Message = "Character ID:" + deleteCharacterRequest.Id + " has been deleted";
-                }
-                else
-                {
-                    response.Success = false;
-                    response.Message = "Character not found!";
-                }
-               
-            }
-            catch (Exception exc)
-            {
-                response.Success = false;
-                response.Message = exc.Message;
-            }
- 
-            return response;
-        }
-
-        public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> GetAllCharacters()
-        {
-            // throw new NotImplementedException();
-            // return new ServiceResponse<List<GetCharacterDto>> { 
-            //     Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList()
-            // };
-
-            var response = new ServiceResponse<List<GetCharacterDtoResponse>>();
-
-            try
-            {
-                var dbCharacter = await _context.Characters
-                    .Where(c => c.User.Id == GetUserId())
-                    .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
-                    .ToListAsync();
-                var sortedCharacterList = dbCharacter
-                    .OrderBy(c => c.Id).ToList();
-                response.Data = sortedCharacterList;
-            }
-            catch (Exception exc)
-            {
-                response.Success = false;
-                response.Message = exc.Message;
-            }
-
-            return response;
-        }
-
-        public async Task<ServiceResponse<GetCharacterDtoResponse>> GetCharacterById(GetSingleCharacterRequest singleCharacterRequest)
-        {
-            // throw new NotImplementedException();
-            var serviceResponse = new ServiceResponse<GetCharacterDtoResponse>();
-
-            try
-            {
-                var dbCharacter = await _context.Characters
-                    .FirstOrDefaultAsync(c => c.Id == singleCharacterRequest.Id && c.User.Id == GetUserId());
-                serviceResponse.Data = _mapper.Map<GetCharacterDtoResponse>(dbCharacter);
-    
-                //If Characater not found
-                if(serviceResponse.Data == null){
-                    serviceResponse.Success = false;
-                    serviceResponse.Message = "Character Not Found!";
-                }
-            }
-            catch (Exception exc)
-            {
-                serviceResponse.Success = false;
-                serviceResponse.Message = exc.Message;
-            }
-
-            return serviceResponse;
-        }   
-
         public async Task<ServiceResponse<GetCharacterDtoResponse>> UpdateCharacter(UpdateCharacterDtoRequest updatedCharacter)
         {
             ServiceResponse<GetCharacterDtoResponse> response = new ServiceResponse<GetCharacterDtoResponse>();
@@ -177,6 +140,45 @@ namespace DotNetRPG.API.Services.CharacterService
 
                 response.Data = _mapper.Map<GetCharacterDtoResponse>(character);
                 response.Message = "Charactere ID:" + character.Id + " has been updated";
+            }
+            catch (Exception exc)
+            {
+                response.Success = false;
+                response.Message = exc.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<ServiceResponse<List<GetCharacterDtoResponse>>> DeleteCharacter(DeleteCharacterRequest deleteCharacterRequest)
+        {
+            ServiceResponse<List<GetCharacterDtoResponse>> response = new ServiceResponse<List<GetCharacterDtoResponse>>();
+
+            try
+            {// If the character exist
+                Character character = await _context.Characters
+                    .FirstOrDefaultAsync(c => c.Id == deleteCharacterRequest.Id && c.User.Id == GetUserId());
+
+                if (character != null)
+                {
+                    _context.Characters.Remove(character);
+                    await _context.SaveChangesAsync();
+
+                    var dbCharacter = await _context.Characters
+                        .Where(c => c.User.Id == GetUserId())
+                        .Select(c => _mapper.Map<GetCharacterDtoResponse>(c))
+                        .ToListAsync();
+                    response.Data = dbCharacter
+                        .OrderBy(c => c.Id).ToList();
+
+                    response.Message = "Character ID:" + deleteCharacterRequest.Id + " has been deleted";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Character not found!";
+                }
+
             }
             catch (Exception exc)
             {
