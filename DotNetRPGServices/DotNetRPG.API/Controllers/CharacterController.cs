@@ -31,17 +31,15 @@ namespace DotNetRPG.API.Controllers
             {
                 response.Success = false;
                 response.Message = "Character/s not found!";
-                return NotFound();
+                return NotFound(response);
             }
 
             return Ok(response);
-            
-            
         }
 
         [HttpGet("GetSingleCharacterById")]// Returns a single character with id provided 
-        public async Task<ActionResult<ServiceResponse<GetCharacterDtoResponse>>> GetSingleCharacterById(GetSingleCharacterRequest singleCharacterRequest){
-            var response = await _characterService.GetCharacterById(singleCharacterRequest);
+        public async Task<IActionResult> GetCharacterById(GetSingleCharacterRequest singleCharacterRequest){
+            var response = _characterService.GetCharacterById(singleCharacterRequest);
             if(response.Data == null) return NotFound(response);
             return Ok(response);
         }
