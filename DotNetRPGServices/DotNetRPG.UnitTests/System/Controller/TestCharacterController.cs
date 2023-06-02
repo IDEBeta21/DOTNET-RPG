@@ -93,7 +93,7 @@ public class TestCharacterController
     }
     #endregion
 
-    #region GetSingleCharacterById
+    #region GetCharacterById
     [Fact]
     public async Task GetCharacterById_OnSuccess_ReturnStatusCode200()
     {
