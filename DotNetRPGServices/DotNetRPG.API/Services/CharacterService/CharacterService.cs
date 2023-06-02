@@ -54,15 +54,15 @@ namespace DotNetRPG.API.Services.CharacterService
             return response;
         }
 
-        public async Task<ServiceResponse<GetCharacterDtoResponse>> GetCharacterById(GetSingleCharacterRequest singleCharacterRequest)
+        public ServiceResponse<GetCharacterDtoResponse> GetCharacterById(GetSingleCharacterRequest singleCharacterRequest)
         {
             // throw new NotImplementedException();
             var serviceResponse = new ServiceResponse<GetCharacterDtoResponse>();
 
             try
             {
-                var dbCharacter = await _context.Characters
-                    .FirstOrDefaultAsync(c => c.Id == singleCharacterRequest.Id && c.User.Id == GetUserId());
+                var dbCharacter = _context.Characters
+                    .FirstOrDefault(c => c.Id == singleCharacterRequest.Id && c.User.Id == GetUserId());
                 serviceResponse.Data = _mapper.Map<GetCharacterDtoResponse>(dbCharacter);
     
                 //If Characater not found

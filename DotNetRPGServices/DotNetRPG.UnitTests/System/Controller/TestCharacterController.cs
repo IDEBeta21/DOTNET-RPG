@@ -89,7 +89,109 @@ public class TestCharacterController
         var result = await sut.GetAllCharacters();
 
         //Assert
-        result.Should().BeOfType<NotFoundResult>();
+        result.Should().BeOfType<NotFoundObjectResult>();
+    }
+    #endregion
+
+    #region GetSingleCharacterById
+    [Fact]
+    public async Task GetCharacterById_OnSuccess_ReturnStatusCode200()
+    {
+        //Arrange
+        var request = new GetSingleCharacterRequest
+        {
+            Id = 32
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.GetCharacterById(request))
+            .Returns(GetCharacterByIdFixtures.GetCharacterByIdResponse());
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = (OkObjectResult)await sut.GetCharacterById(request);
+
+        //Assert
+        result.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public async Task GetCharacterById_OnSuccess_InvokePayorDataRepoExactlyOnce()
+    {
+        //Arrange
+        var request = new GetSingleCharacterRequest
+        {
+            Id = 32
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.GetCharacterById(request))
+            .Returns(GetCharacterByIdFixtures.GetCharacterByIdResponse());
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = await sut.GetCharacterById(request);
+
+        //Assert
+        mockCharacterServices.Verify(
+            service => service.GetCharacterById(request),
+            Times.Once()
+            );
+    }
+    [Fact]
+    public async Task GetCharacterById_OnSuccess_ReturnCharacterById()
+    {
+        //Arrange
+        var request = new GetSingleCharacterRequest
+        {
+            Id = 32
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.GetCharacterById(request))
+            .Returns(GetCharacterByIdFixtures.GetCharacterByIdResponse());
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = await sut.GetCharacterById(request);
+
+        //Assert
+        result.Should().BeOfType<OkObjectResult>();
+        var objectres = (OkObjectResult)result;
+        objectres.Value.Should().BeOfType<ServiceResponse<GetCharacterDtoResponse>>();
+    }
+
+    [Fact]
+    public async Task GetCharacterById_ReturnsNotFound()
+    {
+        //Arrange
+        var request = new GetSingleCharacterRequest
+        {
+            Id = 5
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.GetCharacterById(request))
+            .Returns(GetCharacterByIdFixtures.GetCharacterByIdNotFoundResponse());
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = await sut.GetCharacterById(request);
+
+        //Assert
+        result.Should().BeOfType<NotFoundObjectResult>();
     }
     #endregion
 }
