@@ -32,7 +32,7 @@ public class TestCharacterController
     }
 
     [Fact]
-    public async Task GetAllCharacters_OnSuccess_InvokePayorDataRepoExactlyOnce()
+    public async Task GetAllCharacters_OnSuccess_InvokeCharacterDataServicesExactlyOnce()
     {
         //Arrange
         var mockCharacterServices = new Mock<ICharacterService>();
@@ -119,7 +119,7 @@ public class TestCharacterController
     }
 
     [Fact]
-    public async Task GetCharacterById_OnSuccess_InvokePayorDataRepoExactlyOnce()
+    public async Task GetCharacterById_OnSuccess_InvokeCharacterDataServicesExactlyOnce()
     {
         //Arrange
         var request = new GetSingleCharacterRequest
@@ -192,6 +192,99 @@ public class TestCharacterController
 
         //Assert
         result.Should().BeOfType<NotFoundObjectResult>();
+    }
+    #endregion
+
+    #region AddCharacter
+    [Fact]
+    public async Task AddCharacter_OnSuccess_ReturnStatusCode200()
+    {
+        //Arrange
+        var request = new AddCharacterDtoRequest
+        {
+            Name = "Celestine",
+            HitPoints = 100,
+            Strength = 5,
+            Defense = 5,
+            Intelligence = 10,
+            Class = RpgClass.Mage
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.AddCharacter(request))
+            .Returns(AddCharacterFixtures.AddCharacterFixturesResponse);
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = (OkObjectResult)await sut.AddCharacter(request);
+
+        //Assert
+        result.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public async Task AddCharacter_OnSuccess_InvokeCharacterDataServicesExactlyOnce()
+    {
+        //Arrange
+        var request = new AddCharacterDtoRequest
+        {
+            Name = "Celestine",
+            HitPoints = 100,
+            Strength = 5,
+            Defense = 5,
+            Intelligence = 10,
+            Class = RpgClass.Mage
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.AddCharacter(request))
+            .Returns(AddCharacterFixtures.AddCharacterFixturesResponse);
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = await sut.AddCharacter(request);
+
+        //Assert
+        mockCharacterServices.Verify(
+            service => service.AddCharacter(request),
+            Times.Once()
+            );
+    }
+    [Fact]
+    public async Task AddCharacter_OnSuccess_ReturnCharacterById()
+    {
+        //Arrange
+        var request = new AddCharacterDtoRequest
+        {
+            Name = "Celestine",
+            HitPoints = 100,
+            Strength = 5,
+            Defense = 5,
+            Intelligence = 10,
+            Class = RpgClass.Mage
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.AddCharacter(request))
+            .Returns(AddCharacterFixtures.AddCharacterFixturesResponse);
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = await sut.AddCharacter(request);
+
+        //Assert
+        result.Should().BeOfType<OkObjectResult>();
+        var objectres = (OkObjectResult)result;
+        objectres.Value.Should().BeOfType<ServiceResponse<List<GetCharacterDtoResponse>>>();
     }
     #endregion
 }
