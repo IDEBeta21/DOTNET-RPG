@@ -10,8 +10,8 @@ namespace DotNetRPG.API.Services.CharacterService
     {
         ServiceResponse<List<GetCharacterDtoResponse>> GetAllCharacters();
         ServiceResponse<GetCharacterDtoResponse> GetCharacterById(GetSingleCharacterRequest singleCharacterRequest);
-        Task<ServiceResponse<List<GetCharacterDtoResponse>>> AddCharacter(AddCharacterDtoRequest newCharacter); 
-        Task<ServiceResponse<GetCharacterDtoResponse>> UpdateCharacter(UpdateCharacterDtoRequest updatedCharacter);
-        Task<ServiceResponse<List<GetCharacterDtoResponse>>> DeleteCharacter(DeleteCharacterRequest deleteCharacterRequest);
+        ServiceResponse<List<GetCharacterDtoResponse>> AddCharacter(AddCharacterDtoRequest newCharacter); 
+        ServiceResponse<GetCharacterDtoResponse> UpdateCharacter(UpdateCharacterDtoRequest updatedCharacter);
+        ServiceResponse<List<GetCharacterDtoResponse>> DeleteCharacter(DeleteCharacterRequest deleteCharacterRequest);
     }
 }

@@ -45,13 +45,13 @@ namespace DotNetRPG.API.Controllers
         }
 
         [HttpPost("AddCharacter")]//Add new Character
-        public async Task<ActionResult<ServiceResponse<List<GetCharacterDtoResponse>>>> AddCharacter(AddCharacterDtoRequest newCharacter){
-            return Ok(await _characterService.AddCharacter(newCharacter));
+        public async Task<IActionResult> AddCharacter(AddCharacterDtoRequest newCharacter){
+            return Ok(_characterService.AddCharacter(newCharacter));
         }
 
         [HttpPut("UpdateCharacterById")]//Update character information
-        public async Task<ActionResult<ServiceResponse<GetCharacterDtoResponse>>> UpdateCharacter(UpdateCharacterDtoRequest updatedCharacter){
-            var response = await _characterService.UpdateCharacter(updatedCharacter);
+        public async Task<IActionResult> UpdateCharacter(UpdateCharacterDtoRequest updatedCharacter){
+            var response = _characterService.UpdateCharacter(updatedCharacter);
             if(response.Data == null){
                 return NotFound(response);
             }
@@ -60,8 +60,8 @@ namespace DotNetRPG.API.Controllers
         }
 
         [HttpDelete("DeleteCharacterById")]// Returns a single character with id provided 
-        public async Task<ActionResult<ServiceResponse<List<GetCharacterDtoResponse>>>> Delete(DeleteCharacterRequest deleteCharacterRequest){
-            var response = await _characterService.DeleteCharacter(deleteCharacterRequest);
+        public async Task<IActionResult> DeleteCharacter(DeleteCharacterRequest deleteCharacterRequest){
+            var response = _characterService.DeleteCharacter(deleteCharacterRequest);
             if(response.Data == null){
                 return NotFound(response);
             }
