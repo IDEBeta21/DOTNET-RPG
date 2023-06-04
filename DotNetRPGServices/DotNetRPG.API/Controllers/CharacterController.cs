@@ -49,7 +49,7 @@ namespace DotNetRPG.API.Controllers
             return Ok(_characterService.AddCharacter(newCharacter));
         }
 
-        [HttpPut("UpdateCharacterById")]//Update character information
+        [HttpPut("UpdateCharacter")]//Update character information
         public async Task<IActionResult> UpdateCharacter(UpdateCharacterDtoRequest updatedCharacter){
             var response = _characterService.UpdateCharacter(updatedCharacter);
             if(response.Data == null){
@@ -60,8 +60,8 @@ namespace DotNetRPG.API.Controllers
         }
 
         [HttpDelete("DeleteCharacterById")]// Returns a single character with id provided 
-        public async Task<IActionResult> DeleteCharacter(DeleteCharacterRequest deleteCharacterRequest){
-            var response = _characterService.DeleteCharacter(deleteCharacterRequest);
+        public async Task<IActionResult> DeleteCharacterById(DeleteCharacterRequest deleteCharacterRequest){
+            var response = _characterService.DeleteCharacterById(deleteCharacterRequest);
             if(response.Data == null){
                 return NotFound(response);
             }

@@ -357,6 +357,7 @@ public class TestCharacterController
         //Arrange
         var request = new UpdateCharacterDtoRequest
         {
+            Id = 3,
             Name = "Celestine",
             HitPoints = 100,
             Strength = 5,
@@ -388,6 +389,7 @@ public class TestCharacterController
         //Arrange
         var request = new UpdateCharacterDtoRequest
         {
+            Id = 21,
             Name = "Celestine",
             HitPoints = 100,
             Strength = 5,
@@ -406,6 +408,108 @@ public class TestCharacterController
 
         //Act
         var result = await sut.UpdateCharacter(request);
+
+        //Assert
+        result.Should().BeOfType<NotFoundObjectResult>();
+    }
+    #endregion
+
+    #region DeleteCharacterById
+    [Fact]
+    public async Task DeleteCharacterById_OnSuccess_ReturnStatusCode200()
+    {
+        //Arrange
+        var request = new DeleteCharacterRequest
+        {
+            Id = 1
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.DeleteCharacterById(request))
+            .Returns(DeleteCharacterByIdFixtures.DeleteCharacterByIdFixturesResponse);
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = (OkObjectResult)await sut.DeleteCharacterById(request);
+
+        //Assert
+        result.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public async Task DeleteCharacterById_OnSuccess_InvokeCharacterDataServicesExactlyOnce()
+    {
+        //Arrange
+        var request = new DeleteCharacterRequest
+        {
+            Id = 1
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.DeleteCharacterById(request))
+            .Returns(DeleteCharacterByIdFixtures.DeleteCharacterByIdFixturesResponse);
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = await sut.DeleteCharacterById(request);
+
+        //Assert
+        mockCharacterServices.Verify(
+            service => service.DeleteCharacterById(request),
+            Times.Once()
+            );
+    }
+    [Fact]
+    public async Task DeleteCharacterById_OnSuccess_ReturnsAllCharacters()
+    {
+        //Arrange
+        var request = new DeleteCharacterRequest
+        {
+            Id = 1
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.DeleteCharacterById(request))
+            .Returns(DeleteCharacterByIdFixtures.DeleteCharacterByIdFixturesResponse);
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = await sut.DeleteCharacterById(request);
+
+        //Assert
+        result.Should().BeOfType<OkObjectResult>();
+        var objectres = (OkObjectResult)result;
+        objectres.Value.Should().BeOfType<ServiceResponse<List<GetCharacterDtoResponse>>>();
+    }
+
+    [Fact]
+    public async Task DeleteCharacterById_ReturnsNotFound()
+    {
+        //Arrange
+        var request = new DeleteCharacterRequest
+        {
+            Id = 32
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.DeleteCharacterById(request))
+            .Returns(DeleteCharacterByIdFixtures.DeleteCharacterByIdFixturesDataNotFound);
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = await sut.DeleteCharacterById(request);
 
         //Assert
         result.Should().BeOfType<NotFoundObjectResult>();

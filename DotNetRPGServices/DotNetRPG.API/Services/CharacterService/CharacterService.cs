@@ -150,7 +150,7 @@ namespace DotNetRPG.API.Services.CharacterService
             return response;
         }
 
-        public ServiceResponse<List<GetCharacterDtoResponse>> DeleteCharacter(DeleteCharacterRequest deleteCharacterRequest)
+        public ServiceResponse<List<GetCharacterDtoResponse>> DeleteCharacterById(DeleteCharacterRequest deleteCharacterRequest)
         {
             ServiceResponse<List<GetCharacterDtoResponse>> response = new ServiceResponse<List<GetCharacterDtoResponse>>();
 

@@ -12,6 +12,6 @@ namespace DotNetRPG.API.Services.CharacterService
         ServiceResponse<GetCharacterDtoResponse> GetCharacterById(GetSingleCharacterRequest singleCharacterRequest);
         ServiceResponse<List<GetCharacterDtoResponse>> AddCharacter(AddCharacterDtoRequest newCharacter); 
         ServiceResponse<GetCharacterDtoResponse> UpdateCharacter(UpdateCharacterDtoRequest updatedCharacter);
-        ServiceResponse<List<GetCharacterDtoResponse>> DeleteCharacter(DeleteCharacterRequest deleteCharacterRequest);
+        ServiceResponse<List<GetCharacterDtoResponse>> DeleteCharacterById(DeleteCharacterRequest deleteCharacterRequest);
     }
 }
