@@ -287,4 +287,128 @@ public class TestCharacterController
         objectres.Value.Should().BeOfType<ServiceResponse<List<GetCharacterDtoResponse>>>();
     }
     #endregion
+
+    #region UpdateCharacter
+    [Fact]
+    public async Task UpdateCharacter_OnSuccess_ReturnStatusCode200()
+    {
+        //Arrange
+        var request = new UpdateCharacterDtoRequest
+        {
+            Id = 3,
+            Name = "Celestine",
+            HitPoints = 100,
+            Strength = 5,
+            Defense = 5,
+            Intelligence = 10,
+            Class = RpgClass.Mage
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.UpdateCharacter(request))
+            .Returns(UpdateCharacterFixtures.UpdateCharacterResponse);
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = (OkObjectResult)await sut.UpdateCharacter(request);
+
+        //Assert
+        result.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public async Task UpdateCharacter_OnSuccess_InvokeCharacterDataServicesExactlyOnce()
+    {
+        //Arrange
+        var request = new UpdateCharacterDtoRequest
+        {
+            Id = 3,
+            Name = "Celestine",
+            HitPoints = 100,
+            Strength = 5,
+            Defense = 5,
+            Intelligence = 10,
+            Class = RpgClass.Mage
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.UpdateCharacter(request))
+            .Returns(UpdateCharacterFixtures.UpdateCharacterResponse);
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = await sut.UpdateCharacter(request);
+
+        //Assert
+        mockCharacterServices.Verify(
+            service => service.UpdateCharacter(request),
+            Times.Once()
+            );
+    }
+    [Fact]
+    public async Task UpdateCharacter_OnSuccess_ReturnCharacterById()
+    {
+        //Arrange
+        var request = new UpdateCharacterDtoRequest
+        {
+            Name = "Celestine",
+            HitPoints = 100,
+            Strength = 5,
+            Defense = 5,
+            Intelligence = 10,
+            Class = RpgClass.Mage
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.UpdateCharacter(request))
+            .Returns(UpdateCharacterFixtures.UpdateCharacterResponse);
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = await sut.UpdateCharacter(request);
+
+        //Assert
+        result.Should().BeOfType<OkObjectResult>();
+        var objectres = (OkObjectResult)result;
+        objectres.Value.Should().BeOfType<ServiceResponse<GetCharacterDtoResponse>>();
+    }
+
+    [Fact]
+    public async Task UpdateCharacter_ReturnsNotFound()
+    {
+        //Arrange
+        var request = new UpdateCharacterDtoRequest
+        {
+            Name = "Celestine",
+            HitPoints = 100,
+            Strength = 5,
+            Defense = 5,
+            Intelligence = 10,
+            Class = RpgClass.Mage
+        };
+
+        var mockCharacterServices = new Mock<ICharacterService>();
+
+        mockCharacterServices
+            .Setup(service => service.UpdateCharacter(request))
+            .Returns(UpdateCharacterFixtures.UpdateCharacterNotFoundResponse);
+
+        var sut = new CharacterController(mockCharacterServices.Object);
+
+        //Act
+        var result = await sut.UpdateCharacter(request);
+
+        //Assert
+        result.Should().BeOfType<NotFoundObjectResult>();
+    }
+    #endregion
 }
