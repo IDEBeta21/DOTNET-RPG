@@ -12,9 +12,18 @@ namespace DotNetRPG.API.Data
         {
              
         }
-
         public DbSet<Character> Characters { get; set; }
         public DbSet<User> Users { get; set; }
-
+        public async Task<bool> CanConnectAsync()
+        {
+            try
+            {
+                return await this.Database.CanConnectAsync();
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
