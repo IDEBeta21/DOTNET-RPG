@@ -37,7 +37,7 @@ namespace DotNetRPG.API.Controllers
             return Ok(response);
         }
 
-        [HttpGet("GetCharacterById")]// Returns a single character with id provided 
+        [HttpPost("GetCharacterById")]// Returns a single character with id provided 
         public async Task<IActionResult> GetCharacterById(GetSingleCharacterRequest singleCharacterRequest){
             var response = _characterService.GetCharacterById(singleCharacterRequest);
             if(response.Data == null) return NotFound(response);

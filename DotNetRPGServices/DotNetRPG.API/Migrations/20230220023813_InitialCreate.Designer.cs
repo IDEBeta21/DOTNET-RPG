@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DotNetRPG.API.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(RpgDataContext))]
     [Migration("20230220023813_InitialCreate")]
     partial class InitialCreate
     {

@@ -13,9 +13,9 @@ namespace DotNetRPG.API.Services.CharacterService
     public class CharacterService : ICharacterService
     {
         private readonly IMapper _mapper;
-        private readonly DataContext _context;
+        private readonly RpgDataContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public CharacterService(IMapper mapper, DataContext context, IHttpContextAccessor httpContextAccessor)
+        public CharacterService(IMapper mapper, RpgDataContext context, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _context = context;

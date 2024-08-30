@@ -12,9 +12,9 @@ namespace DotNetRPG.API.Data
 {
     public class AuthRepository : IAuthRepository
     {
-        private readonly DataContext _context;
+        private readonly RpgDataContext _context;
         private readonly IConfiguration _configuration;
-        public AuthRepository(DataContext context, IConfiguration configuration)
+        public AuthRepository(RpgDataContext context, IConfiguration configuration)
         {
             _configuration = configuration;
             _context = context;
