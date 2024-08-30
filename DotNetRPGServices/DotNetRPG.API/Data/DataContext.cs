@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotNetRPG.API.Data
 {
-    public class DataContext : DbContext
+    public class RpgDataContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base (options)
+        public RpgDataContext(DbContextOptions<RpgDataContext> options) : base (options)
         {
              
         }

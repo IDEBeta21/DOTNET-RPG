@@ -7,8 +7,8 @@ namespace DotNetRPG.API.Controllers
     [Route("api/[controller]")]
     public class HealthCheckController : ControllerBase 
     {
-        private readonly DataContext _datacontext;
-        public HealthCheckController(DataContext datacontext)
+        private readonly RpgDataContext _datacontext;
+        public HealthCheckController(RpgDataContext datacontext)
         {
             _datacontext = datacontext;
         }

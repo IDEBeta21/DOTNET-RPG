@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DotNetRPG.API.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(RpgDataContext))]
     [Migration("20230221024227_UserCharacterRelationship")]
     partial class UserCharacterRelationship
     {
