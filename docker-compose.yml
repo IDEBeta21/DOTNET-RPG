@@ -4,6 +4,24 @@ networks:
     driver: bridge
 
 services:
+  # Postgres database image
+  dotnet-rpg-db:
+    image: postgres:latest
+    container_name: rpg-db
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      PGPORT: ${DATABASE_PORT}
+    ports:
+      - "5434:5434"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - local
+  
+
+  #Dotnet RPG environment
   dotnet-rpg-api:
     image: dotnet-rpg
     container_name: dotnet-rpg-api
@@ -14,5 +32,9 @@ services:
       - "5001:5001"
     environment:
       - ASPNETCORE_URLS=http://+:5001
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=${CONNECTION_STRING}  
+      - ASPNETCORE_ENVIRONMENT=Development\
+    networks:
+      - local
+
+volumes:
+  postgres_data:
