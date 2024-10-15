@@ -29,12 +29,20 @@ services:
       context: .
       dockerfile: apps/api/DotNetRPG.API/Dockerfile
     ports:
+      - "5000:5000"
       - "5001:5001"
     environment:
-      - ASPNETCORE_URLS=http://+:5001
-      - ASPNETCORE_ENVIRONMENT=Development\
+      - ASPNETCORE_URLS=https://+:5001;http://+:5000
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetcore.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${PASSWORD_CREDENTIAL}
+    volumes:
+      # - ~/.aspnet/https:/https:ro
+      - ./https:/https:ro
     networks:
       - local
+    depends_on:
+      - dotnet-rpg-db
 
 volumes:
   postgres_data:
