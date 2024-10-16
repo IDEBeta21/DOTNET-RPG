@@ -16,4 +16,5 @@
 - Run `docker compose up --build -d`
 
 PS: This project is created to further enhance my knowledge in webapi development with dotnet framework and docker while using linux. This project is not going to be perfect since its just going to be use for practicing. I also want to use this project as a reference for when I encounter scenarios that are similar to what I'm currently doing. 
+
 PPS: You are also free to use this project for practicing and/or reference. 
