@@ -18,6 +18,7 @@
   - Note: if the docker compose build fails due to missing env file. Go to root folder of this project and change the name of env.example to .env.
 
 **Note**
+-
 - When running debug mode for the application. Change the `Host` in appsettings.json to `localhost` like in the `DefaultConnection_BAK`. You can then change it back to `rpg-db` before running `docker compose --build`. (This is the work around for now, since the certificate on this is using the one from openssl and not the dotnet dev-certs)
 
 PS: This project is created to further enhance my knowledge in webapi development with dotnet framework and docker while using linux. This project is not going to be perfect since its just going to be use for practicing. I also want to use this project as a reference for when I encounter scenarios that are similar to what I'm currently doing. 
